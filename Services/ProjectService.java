@@ -57,4 +57,14 @@ public class ProjectService {
         }
         return null;
     }
+
+    //get software projects only
+    public Project[] getSoftwareProjects(){
+        int count = 0;
+        for(int i = 0; i<projectCount; i++){
+            if(projects[i].getProjectType().equals("Software")){
+                count++;
+            }
+        }
+    }
 }
