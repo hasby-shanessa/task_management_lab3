@@ -39,4 +39,17 @@ public class TaskService {
         }
         return null;
     }
+    //find project containing a task
+    public Project findProjectContainingTask(String taskId){
+        Project[] projects = projectService.getAllProjects();
+        int count = projectService.getProjectCount();
+
+        for(int i = 0; i < count; i++){
+            Task task =projects[i].findTaskById(taskId);
+            if(task != null){
+                return projects[i];
+            }
+        }
+        return null;
+    }
 }
