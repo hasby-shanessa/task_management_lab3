@@ -25,4 +25,18 @@ public class TaskService {
     public Task addTaskToProject(String projectId, String taskName, String status){
         return addTaskToProject(projectId, taskName, "", status);
     }
+
+    //find task by ID
+    public Task findTaskById(String taskId){
+        Project[] projects = projectService.getAllProjects();
+        int count = projectService.getProjectCount();
+
+        for(int i=0; i<count; i++){
+            Task task = projects[i].findTaskById((taskId));
+            if(task != null){
+                return task;
+            }
+        }
+        return null;
+    }
 }
