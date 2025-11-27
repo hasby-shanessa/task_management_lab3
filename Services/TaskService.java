@@ -52,4 +52,19 @@ public class TaskService {
         }
         return null;
     }
+
+    //get all tasks from a project
+    public Task[] getTasksFromProject(String projectId){
+        Project project = projectService.findProjectById(projectId);
+        if(project == null){
+            return new Task[0];
+        }
+        Task[] allTasks = project.getTasks();
+        int count = project.getTaskCount();
+        Task[] result = new Task[count];
+        for(int i = 0; i<count; i++){
+            result[i] = allTasks[i];
+        }
+        return result;
+    }
 }
