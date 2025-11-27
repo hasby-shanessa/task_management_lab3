@@ -115,4 +115,25 @@ public class ProjectService {
         }
         return count;
     }
+
+    //Delete project
+    public boolean deleteProject(String projectId){
+        int indexToDelete = -1;
+        for(int i = 0; i<projectCount; i++){
+            if(projects[i].getProjectId().equals(projectId)){
+                indexToDelete = i;
+                break;
+            }
+        }
+        if ( indexToDelete == -1){
+            return false;
+        }
+        //shifting to fill the gap
+        for(int i = indexToDelete; i<projectCount-1; i++){
+            projects[i] = projects[i+1];
+        }
+        projects[projectCount -1] = null;
+        projectCount--;
+        return true;
+    }
 }
