@@ -12,7 +12,7 @@ public class Task implements Completable {
     private String projectId;
 
     public Task(String taskName, String taskDescription, String status){
-        this.taskId = "T" + String.format("%03d", nextId);
+        this.taskId = "T" + String.format("%03d", nextId++);
         this.taskName = taskName;
         this.taskDescription = taskDescription;
 
@@ -31,7 +31,7 @@ public class Task implements Completable {
     }
 
     private boolean isValidStatus(String status){
-        return status.equals("Created") || status.equals("In Progress") || status.equals("Completed");
+        return status.equals("Created") || status.equals("In Progress") || status.equals("COMPLETED");
     }
 
     // GETTERS AND SETTERS

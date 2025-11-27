@@ -16,7 +16,7 @@ public abstract class Project implements Completable {
     protected static final int MAX_TASKS = 100;
 
     public Project( String projectName, String projectDescription, int teamSize, String budget){
-        this.projectId = "P" + String.format("%03d", nextId);
+        this.projectId = "P" + String.format("%03d", nextId++);
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.teamSize = teamSize;
