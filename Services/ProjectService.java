@@ -136,4 +136,16 @@ public class ProjectService {
         projectCount--;
         return true;
     }
+
+    //get average completion
+    public double getAverageCompletion(){
+        if(projectCount == 0){
+            return 0.0;
+        }
+        double total =0.0;
+        for (int i = 0; i<projectCount; i++){
+            total += projects[i].getCompletionPercentage();
+        }
+        return total / projectCount;
+    }
 }
