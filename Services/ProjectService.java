@@ -66,5 +66,14 @@ public class ProjectService {
                 count++;
             }
         }
+        Project[] result = new Project[count];
+        int index = 0;
+        for(int i = 0; i<projectCount; i++){
+            if(projects[i].getProjectType().equals("Software")){
+                result[index] = projects[i];
+                index++;
+            }
+        }
+        return result;
     }
 }
