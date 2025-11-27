@@ -76,4 +76,23 @@ public class ProjectService {
         }
         return result;
     }
+
+    //Get hardware projects only
+    public Project[] getHardwareProjects(){
+        int count = 0;
+        for(int i = 0; i<projectCount; i++){
+            if(projects[i].getProjectType().equals("Hardware")){
+                count++;
+            }
+        }
+        Project[] result = new Project[count];
+        int index = 0;
+        for(int i = 0; i<projectCount; i++){
+            if(projects[i].getProjectType().equals("Hardware")){
+                result[index] = projects[i];
+                index++;
+            }
+        }
+        return result;
+    }
 }
