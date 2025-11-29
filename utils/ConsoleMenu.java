@@ -127,4 +127,30 @@ public class ConsoleMenu {
         System.out.println("****************************************************************");
         System.out.println();
     }
+
+    //status report
+    public static void displayStatusReportHeader(){
+        System.out.println();
+        System.out.println("****************************************************************");
+        System.out.println("|                     PROJECT STATUS REPORT                    |");
+        System.out.println("****************************************************************");
+        System.out.println();
+    }
+    public static void displayStatusReportTable(Project[] projects, int count, double avgCompletion) {
+        System.out.println("****************************************************************");
+        System.out.printf("%-10s | %-18s | %-5s | %-9s | %s%n", "PROJECT ID", "PROJECT NAME", "TASKS", "COMPLETED", "PROGRESS (%)");
+        System.out.println("****************************************************************");
+        if (count == 0) {
+            System.out.println("  No projects to report.");
+        } else {
+            for (int i = 0; i < count; i++) {
+                Project p = projects[i];
+                System.out.printf("%-10s | %-18s | %-5d | %-9d | %.0f%%%n", p.getProjectId(), truncate(p.getProjectName(), 18), p.getTaskCount(), p.getCompletedTasksCount(), p.getCompletionPercentage());
+            }
+        }
+        System.out.println("****************************************************************");
+        System.out.printf("AVERAGE COMPLETION: %.1f%%%n", avgCompletion);
+        System.out.println("****************************************************************");
+        System.out.println();
+    }
 }
