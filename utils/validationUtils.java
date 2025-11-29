@@ -139,4 +139,24 @@ public class validationUtils {
             System.out.println("Error: Invalid input, please enter a valid Task ID(e.g. T001");
         }
     }
+    //read budget
+    public static String readBudget(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            String cleaned = input.replace("$", "").replace(",", "");
+
+            try {
+                int amount = Integer.parseInt(cleaned);
+                if (amount >= 0) {
+                    // Format with $ and commas
+                    return "$" + String.format("%,d", amount);
+                } else {
+                    System.out.println("Error: Budget cannot be negative.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Please enter a valid amount (e.g., 15000 or $15,000).");
+            }
+        }
+    }
 }
