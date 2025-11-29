@@ -153,4 +153,17 @@ public class ConsoleMenu {
         System.out.println("****************************************************************");
         System.out.println();
     }
+
+    //display user selection
+    public static void displayUserSelection(User[] users, int count){
+        System.out.println();
+        System.out.println("****************************************************************");
+        System.out.println("|                          SELECT USER                         |");
+        System.out.println("****************************************************************");
+        System.out.println();
+        for (int i = 0; i < count; i++) {
+            System.out.println((i + 1) + ". " + users[i].getDisplayHeader());
+        }
+        System.out.println();
+    }
 }
