@@ -74,4 +74,21 @@ public class validationUtils {
             }
         }
     }
+
+    //read valid task status
+    public static String readTaskStatus(String prompt){
+        while(true){
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            if(input.equalsIgnoreCase("Pending") || input.equals("1")){
+                return "Pending";
+            } else if(input.equalsIgnoreCase("In Progress") || input.equalsIgnoreCase("InProress") || input.equals("2")){
+                return "In Progress";
+            } else if(input.equalsIgnoreCase("Completed") || input.equalsIgnoreCase("Complete") || input.equalsIgnoreCase("Done") || input.equals("3")){
+                return "Completed";
+            } else {
+                System.out.println("Error: Invalid status, please choose from (Pending, In progress, Completed)");
+            }
+        }
+    }
 }
