@@ -18,4 +18,10 @@ public class validationUtils {
             }
         }
     }
+
+    //ready any string
+    public static String readStrin(String prompt){
+        System.out.println(prompt);
+        return scanner.nextLine().trim();
+    }
 }
