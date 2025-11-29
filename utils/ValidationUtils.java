@@ -2,7 +2,7 @@ package utils;
 
 import java.util.Scanner;
 
-public class validationUtils {
+public class ValidationUtils {
     private static Scanner scanner = new Scanner(System.in);
 
     //read nonempty string
