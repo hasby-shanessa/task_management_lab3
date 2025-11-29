@@ -110,4 +110,12 @@ public class ConsoleMenu {
         return ValidationUtils.readIntInRange("Enter your choice: ", 1, 5);
     }
 
+    //add task header
+    public static void displayAddTaskHeader(){
+        System.out.println();
+        System.out.println("****************************************************************");
+        System.out.println("|                           ADD NEW TASK                       |");
+        System.out.println("****************************************************************");
+        System.out.println();
+    }
 }
