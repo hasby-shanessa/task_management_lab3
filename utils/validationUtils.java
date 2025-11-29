@@ -159,4 +159,22 @@ public class validationUtils {
             }
         }
     }
+    //read project type
+    public static String readProjectType(){
+        System.out.println("Project Type:");
+        System.out.println("1. Software");
+        System.out.println("2. Hardware");
+
+        while (true){
+            System.out.print("Enter choice (1 or 2): ");
+            String input = scanner.nextLine().trim();
+            if (input.equals("1") || input.equalsIgnoreCase("Software")) {
+                return "Software";
+            } else if (input.equals("2") || input.equalsIgnoreCase("Hardware")) {
+                return "Hardware";
+            } else {
+                System.out.println("Error: Please enter 1 for Software or 2 for Hardware.");
+            }
+        }
+    }
 }
