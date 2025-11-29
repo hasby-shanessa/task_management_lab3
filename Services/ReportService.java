@@ -50,4 +50,21 @@ public StatusReport generateStatusReport(){
         System.out.println("_______________________________________________________________");
         System.out.println();
     }
+
+    //display summary
+    public void displaySummary(){
+        StatusReport report = generateStatusReport();
+        System.out.println();
+        System.out.println("************************************************************");
+        System.out.println("|                          SYSTEM SUMMARY                  |");
+        System.out.println("************************************************************");
+        System.out.println("Total Projects: " + report.getTotalProjects());
+        System.out.println("Completed Projects: " + report.getCompletedProjects());
+        System.out.println("Total Tasks: " + report.getTotalTasks());
+        System.out.println("Completed Tasks: " + report.getCompletedTasks());
+        System.out.printf("Average Progress: %.1f%%%n", report.getAverageCompletion());
+        System.out.println("************************************************************");
+        System.out.println();
+
+    }
 }
