@@ -37,4 +37,22 @@ public class validationUtils {
             }
         }
     }
+
+    //read integer in range(between min and max)
+    public static int readIntInRange(String prompt, int min, int max){
+        while(true){
+            try{
+                System.out.println(prompt);
+                String input = scanner.nextLine().trim();
+                int value = Integer.parseInt(input);
+                if(value >=min&& value<=max){
+                    return value;
+                } else {
+                    System.out.println("Please enter a number between " + min + " and " + max);
+                }
+            } catch(NumberFormatException e){
+                System.out.println("Error: Please enter a valid number");
+            }
+        }
+    }
 }
