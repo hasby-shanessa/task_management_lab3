@@ -3,8 +3,6 @@ package utils;
 import Models.Project;
 import Models.User;
 
-import static com.sun.tools.javac.jvm.Code.truncate;
-
 public class ConsoleMenu {
     public static void displayMenu(User currentUser){
         System.out.println();
