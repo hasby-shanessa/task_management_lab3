@@ -264,7 +264,7 @@ public class Main {
         Project project = projectService.findProjectById(projectId);
 
         if (project == null) {
-            ConsoleMenu.showError("Project " + projectId + " not found.");
+            ConsoleMenu.showError("Project " + projectId + " not found");
             ValidationUtils.waitForEnter();
             return;
         }
@@ -325,7 +325,7 @@ public class Main {
         Task task = project.findTaskById(taskId);
 
         if (task == null) {
-            ConsoleMenu.showError("Task " + taskId + " not found in this project.");
+            ConsoleMenu.showError("Task " + taskId + " not found in this project");
             ValidationUtils.waitForEnter();
             return;
         }
@@ -340,7 +340,7 @@ public class Main {
     //remove task from project
     private static void removeTaskFromProject(Project project) {
         if (project.getTaskCount() == 0) {
-            ConsoleMenu.showInfo("No tasks in this project.");
+            ConsoleMenu.showInfo("No tasks in this project");
             ValidationUtils.waitForEnter();
             return;
         }
@@ -350,7 +350,42 @@ public class Main {
         if (ValidationUtils.confirm("Are you sure you want to remove task " + taskId + "?")) {
             project.removeTask(taskId);
         } else {
-            ConsoleMenu.showInfo("Removal cancelled.");
+            ConsoleMenu.showInfo("Removal cancelled");
+        }
+
+        ValidationUtils.waitForEnter();
+    }
+    //delete project
+    private static void deleteProject() {
+        if (!currentUser.canDeleteProjects()) {
+            ConsoleMenu.showPermissionDenied();
+            return;
+        }
+
+        if (projectService.getProjectCount() == 0) {
+            ConsoleMenu.showInfo("No projects to delete");
+            ValidationUtils.waitForEnter();
+            return;
+        }
+
+        String projectId = ValidationUtils.readProjectId("Enter Project ID to delete: ");
+        Project project = projectService.findProjectById(projectId);
+
+        if (project == null) {
+            ConsoleMenu.showError("Project " + projectId + " not found");
+            ValidationUtils.waitForEnter();
+            return;
+        }
+
+        System.out.println("Project: " + project.getProjectName());
+        System.out.println("Tasks: " + project.getTaskCount());
+
+        if (ValidationUtils.confirm("Are you sure you want to delete this project?")) {
+            if (projectService.deleteProject(projectId)) {
+                ConsoleMenu.showSuccess("Project " + projectId + " deleted");
+            }
+        } else {
+            ConsoleMenu.showInfo("Deletion cancelled");
         }
 
         ValidationUtils.waitForEnter();
