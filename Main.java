@@ -496,4 +496,32 @@ public class Main {
         taskService.updateTaskStatus(taskId, newStatus);
         ValidationUtils.waitForEnter();
     }
+    //remove task
+    private static void removeTask() {
+        if (projectService.getTotalTaskCount() == 0) {
+            ConsoleMenu.showInfo("No tasks available");
+            ValidationUtils.waitForEnter();
+            return;
+        }
+
+        String taskId = ValidationUtils.readTaskId("Enter Task ID to remove: ");
+        Task task = taskService.findTaskById(taskId);
+
+        if (task == null) {
+            ConsoleMenu.showError("Task " + taskId + " not found");
+            ValidationUtils.waitForEnter();
+            return;
+        }
+
+        System.out.println("Task: " + task.getTaskName());
+        System.out.println("Status: " + task.getStatus());
+
+        if (ValidationUtils.confirm("Remove this task?")) {
+            taskService.removeTask(taskId);
+        } else {
+            ConsoleMenu.showInfo("Removal cancelled");
+        }
+
+        ValidationUtils.waitForEnter();
+    }
 }
