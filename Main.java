@@ -1,7 +1,4 @@
-import Models.AdminUser;
-import Models.Project;
-import Models.RegularUser;
-import Models.User;
+import Models.*;
 import Services.ReportService;
 import Services.TaskService;
 import Services.ProjectService;
@@ -295,5 +292,67 @@ public class Main {
                     break;
             }
         }
+    }
+    //add task to specific project
+    private static void addTaskToSpecificProject(Project project){
+        ConsoleMenu.displayAddTaskHeader();
+        String taskName = ValidationUtils.readNonEmptyString("Enter task name: ");
+        String taskDescription = ValidationUtils.readNonEmptyString("Enter description or press enter to skip: ");
+        ValidationUtils.displayStatusOptions();
+        String status = ValidationUtils.readTaskStatus("Enter status: ");
+        Task task = new Task(taskName, taskDescription, status);
+        project.addTask(task);
+        ValidationUtils.waitForEnter();
+    }
+    //add multiple tasks to project
+    private static void addTasksToProject(Project project){
+        boolean addingTasks = true;
+        while(addingTasks){
+            addTaskToSpecificProject(project);
+            addingTasks = ValidationUtils.confirm("Add another task?");
+        }
+    }
+    //update task in project
+    private static void updateTaskInProject(Project project){
+        if(project.getTaskCount()==0){
+            ConsoleMenu.showInfo("No tasks in this project");
+            ValidationUtils.waitForEnter();
+            return;
+        }
+        ConsoleMenu.displayUpdateStatusHeader();
+
+        String taskId = ValidationUtils.readTaskId("Enter Task ID: ");
+        Task task = project.findTaskById(taskId);
+
+        if (task == null) {
+            ConsoleMenu.showError("Task " + taskId + " not found in this project.");
+            ValidationUtils.waitForEnter();
+            return;
+        }
+
+        System.out.println("Current status: " + task.getStatus());
+        ValidationUtils.displayStatusOptions();
+        String newStatus = ValidationUtils.readTaskStatus("Enter new status: ");
+
+        project.updateTaskStatus(taskId, newStatus);
+        ValidationUtils.waitForEnter();
+    }
+    //remove task from project
+    private static void removeTaskFromProject(Project project) {
+        if (project.getTaskCount() == 0) {
+            ConsoleMenu.showInfo("No tasks in this project.");
+            ValidationUtils.waitForEnter();
+            return;
+        }
+
+        String taskId = ValidationUtils.readTaskId("Enter Task ID to remove: ");
+
+        if (ValidationUtils.confirm("Are you sure you want to remove task " + taskId + "?")) {
+            project.removeTask(taskId);
+        } else {
+            ConsoleMenu.showInfo("Removal cancelled.");
+        }
+
+        ValidationUtils.waitForEnter();
     }
 }
