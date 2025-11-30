@@ -206,4 +206,54 @@ public class Main {
         }
         return input;
     }
+    //create new project
+    private static void createProject(){
+        if(!currentUser.canCreateProjects()){
+            ConsoleMenu.showPermissionDenied();
+            return;
+        }
+        ConsoleMenu.displayCreateProjectHeader();
+        //get project type
+        String projectType = ValidationUtils.readProjectType();
+        System.out.println();
+        String name = ValidationUtils.readNonEmptyString("Enter project name: ");
+        String description = ValidationUtils.readString("Enter description: ");
+        int teamSize = ValidationUtils.readPositiveInt("Enter team size: ");
+        String budget = ValidationUtils.readBudget("Enter budget: ");
+
+        Project createdProject;
+        if (projectType.equals("Software")) {
+            System.out.println("\n[Software Project Details]");
+            String language = ValidationUtils.readNonEmptyString("Enter programming language: ");
+            String framework = ValidationUtils.readString("Enter framework (or press Enter to skip): ");
+            if (framework.isEmpty()) framework = "Not specified";
+            String repoUrl = ValidationUtils.readString("Enter repository URL (or press Enter to skip): ");
+            if (repoUrl.isEmpty()) repoUrl = "Not specified";
+
+            createdProject = projectService.createSoftwareProject(
+                    name, description, teamSize, budget, language, framework, repoUrl
+            );
+        } else {
+            System.out.println("\n[Hardware Project Details]");
+            String components = ValidationUtils.readNonEmptyString("Enter components: ");
+            String supplier = ValidationUtils.readString("Enter supplier (or press Enter to skip): ");
+            if (supplier.isEmpty()) supplier = "Not specified";
+
+            createdProject = projectService.createHardwareProject(
+                    name, description, teamSize, budget, components, supplier
+            );
+        }
+
+        if (createdProject != null) {
+            System.out.println();
+            ConsoleMenu.showSuccess("Project \"" + name + "\" created with ID: " + createdProject.getProjectId());
+
+            // Ask if user wants to add tasks
+            if (ValidationUtils.confirm("\nWould you like to add tasks to this project?")) {
+                addTasksToProject(createdProject);
+            }
+        }
+
+        ValidationUtils.waitForEnter();
+    }
 }

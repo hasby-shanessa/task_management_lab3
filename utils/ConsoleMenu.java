@@ -81,7 +81,7 @@ public class ConsoleMenu {
         }
     }
     //display create project header
-    public static void displayCreatePRojectHeader(){
+    public static void displayCreateProjectHeader(){
         System.out.println();
         System.out.println("****************************************************************");
         System.out.println("|                        CREATE NEW PROJECT                     |");
