@@ -42,7 +42,7 @@ public StatusReport generateStatusReport(){
                 if(name.length() > 18){
                     name = name.substring(0, 15) + "...";
                 }
-                System.out.printf("%%-10s | %-18s | %-5d | %-9d | %.0f%%%n", p.getProjectId(), name, p.getTaskCount(), p.getCompletedTasksCount(), p.getCompletionPercentage());
+                System.out.printf("%-10s | %-18s | %-5d | %-9d | %.0f%%%n", p.getProjectId(), name, p.getTaskCount(), p.getCompletedTasksCount(), p.getCompletionPercentage());
             }
         }
         System.out.println("_______________________________________________________________");

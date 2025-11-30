@@ -25,7 +25,7 @@ public class Main {
         showWelcome();  //show welcome and login
         login();
         runMainLoop(); //run the main application loop
-//        shutdown(); //exit
+        shutdown(); //exit
 
     }
     //initialization
@@ -45,6 +45,7 @@ public class Main {
         users[0] = new AdminUser("hasby.admin", "Hasby umu");
         users[1] = new RegularUser("Joy.dev", "Joy Gift", "QA");
         users[2] = new RegularUser("Divine.pm", "Divine Bay", "Product");
+        userCount = 3;
     }
     //show welcome screen
     private static void showWelcome() {
@@ -298,7 +299,7 @@ public class Main {
     private static void addTaskToSpecificProject(Project project){
         ConsoleMenu.displayAddTaskHeader();
         String taskName = ValidationUtils.readNonEmptyString("Enter task name: ");
-        String taskDescription = ValidationUtils.readNonEmptyString("Enter description or press enter to skip: ");
+        String taskDescription = ValidationUtils.readString("Enter description or press enter to skip: ");
         ValidationUtils.displayStatusOptions();
         String status = ValidationUtils.readTaskStatus("Enter status: ");
         Task task = new Task(taskName, taskDescription, status);
