@@ -5,6 +5,7 @@ import Services.ProjectService;
 import utils.ConsoleMenu;
 import utils.ValidationUtils;
 
+import java.io.Console;
 import java.util.Scanner;
 
 public class Main {
@@ -389,5 +390,30 @@ public class Main {
         }
 
         ValidationUtils.waitForEnter();
+    }
+    //manage tasks menu
+    private static void manageTasks(){
+        boolean inTaskMenu = true;
+        while(inTaskMenu){
+            ConsoleMenu.displayTaskMenu();
+            int choice = ConsoleMenu.getTaskMenuChoice();
+            switch (choice) {
+                case 1:
+                    viewTasksByProject();
+                    break;
+                case 2:
+                    addNewTask();
+                    break;
+                case 3:
+                    updateTaskStatus();
+                    break;
+                case 4:
+                    removeTask();
+                    break;
+                case 5:
+                    inTaskMenu = false;
+                    break;
+            }
+        }
     }
 }
