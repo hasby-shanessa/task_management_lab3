@@ -4,6 +4,7 @@ import Models.User;
 import Services.ReportService;
 import Services.TaskService;
 import Services.ProjectService;
+import utils.ConsoleMenu;
 import utils.ValidationUtils;
 
 import java.util.Scanner;
@@ -24,8 +25,8 @@ public class Main {
         initialize();  //initialize the system
         showWelcome();  //show welcome and login
         login();
-        runMainLoop(); //run the main application loop
-        shutdown(); //exit
+//        runMainLoop(); //run the main application loop
+//        shutdown(); //exit
 
     }
     //initialization
@@ -80,4 +81,14 @@ public class Main {
             System.out.println();
             ValidationUtils.waitForEnter();
         }
+        //switch user
+    private static void switchUser(){
+        System.out.println();
+        ConsoleMenu.displayUserSelection(users, userCount);
+        int choice = ValidationUtils.readIntInRange("Select user (1 - " + userCount + "): ", 1, userCount);
+        currentUser = users[choice - 1];
+        System.out.println();
+        System.out.println("Switched to: " + currentUser.getDisplayHeader());
+        ValidationUtils.waitForEnter();
+    }
 }
