@@ -1,5 +1,5 @@
 package Services;
-
+import utils.exceptions.*;
 import Models.Project;
 import Models.Task;
 
@@ -11,23 +11,24 @@ public class TaskService {
         this.projectService = projectService;
     }
     public Task addTaskToProject(String projectId, String taskName, String taskDescription, String status){
-        Project project = projectService.findProjectById(projectId);
-        if(project == null){
-            System.out.println("Error: Project: " + projectId + " not found");
+        try {
+            Project project = projectService.findProjectById(projectId);
+            Task task = new Task(taskName, taskDescription, status);
+            if(project.addTask(task)){
+                return task;
+            }
+            return null;
+        } catch (EmptyProjectException e) {
+            System.out.println("Error: Project " + projectId + " not found");
             return null;
         }
-        Task task = new Task(taskName, taskDescription, status);
-        if(project.addTask(task)){
-            return task;
-        }
-        return null;
     }
     public Task addTaskToProject(String projectId, String taskName, String status){
         return addTaskToProject(projectId, taskName, "", status);
     }
 
     //find task by ID
-    public Task findTaskById(String taskId){
+    public Task findTaskById(String taskId) throws TaskNotFoundException{
         Project[] projects = projectService.getAllProjects();
         int count = projectService.getProjectCount();
 
@@ -37,7 +38,7 @@ public class TaskService {
                 return task;
             }
         }
-        return null;
+        throw  new TaskNotFoundException(taskId, " Task " + taskId + " not found");
     }
     //find project containing a task
     public Project findProjectContainingTask(String taskId){
@@ -54,7 +55,7 @@ public class TaskService {
     }
 
     //get all tasks from a project
-    public Task[] getTasksFromProject(String projectId){
+    public Task[] getTasksFromProject(String projectId) throws EmptyProjectException{
         Project project = projectService.findProjectById(projectId);
         if(project == null){
             return new Task[0];
@@ -69,7 +70,7 @@ public class TaskService {
     }
 
     //update task status
-    public boolean updateTaskStatus(String taskId, String newStatus){
+    public boolean updateTaskStatus(String taskId, String newStatus) throws TaskNotFoundException{
         Task task = findTaskById(taskId);
         if(task == null){
             System.out.println("Error: Task: " + taskId + " not found");
@@ -83,7 +84,7 @@ public class TaskService {
     }
 
     //assign task to a user
-    public boolean assignTask(String taskId, String username) {
+    public boolean assignTask(String taskId, String username) throws TaskNotFoundException{
         Task task = findTaskById(taskId);
         if (task == null) {
             System.out.println("Error: Task " + taskId + " not found.");
@@ -96,7 +97,7 @@ public class TaskService {
     }
 
     //remove task
-    public boolean removeTask(String taskId){
+    public boolean removeTask(String taskId) throws TaskNotFoundException{
         Project project = findProjectContainingTask(taskId);
         if(project == null){
             System.out.println("Error: Not found");

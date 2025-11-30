@@ -31,7 +31,7 @@ public class Task implements Completable {
     }
 
     private boolean isValidStatus(String status){
-        return status.equals("Created") || status.equals("In Progress") || status.equals("COMPLETED");
+        return status.equals("Pending") || status.equals("In Progress") || status.equals("COMPLETED");
     }
 
     // GETTERS AND SETTERS
@@ -89,17 +89,17 @@ public class Task implements Completable {
 
     @Override
     public boolean isComplete(){
-        return status.equals("COMPLETED");
+        return status.equals("Completed");
     }
 
     @Override
     public void markAsComplete(){
-        this.status = "COMPLETED";
+        this.status = "Completed";
     }
 
     @Override
     public double getCompletionPercentage(){
-        return status.equals("COMPLETED")?100.0:0.0;
+        return status.equals("Completed")?100.0:0.0;
     }
 
     public static void resetIdCounter(){

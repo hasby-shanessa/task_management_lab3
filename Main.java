@@ -4,6 +4,8 @@ import Services.TaskService;
 import Services.ProjectService;
 import utils.ConsoleMenu;
 import utils.ValidationUtils;
+import utils.exceptions.TaskNotFoundException;
+import utils.exceptions.*;
 
 import java.io.Console;
 import java.util.Scanner;
@@ -180,10 +182,10 @@ public class Main {
                 String input = ValidationUtils.readString("Enter Project ID to view details (or press Enter to go back): ");
                 if(!input.isEmpty()){
                     String projectId = normalizeProjectId(input);
-                    Project project = projectService.findProjectById(projectId);
-                    if(project != null){
+                    try {
+                        Project project = projectService.findProjectById(projectId);
                         showProjectDetailsAndOptions(project);
-                    } else {
+                    } catch (EmptyProjectException e) {
                         ConsoleMenu.showError("Project " + projectId + " not found");
                     }
                 }
@@ -220,37 +222,41 @@ public class Main {
         int teamSize = ValidationUtils.readPositiveInt("Enter team size: ");
         String budget = ValidationUtils.readBudget("Enter budget: ");
 
-        Project createdProject;
-        if (projectType.equals("Software")) {
-            System.out.println("\n[Software Project Details]");
-            String language = ValidationUtils.readNonEmptyString("Enter programming language: ");
-            String framework = ValidationUtils.readString("Enter framework (or press Enter to skip): ");
-            if (framework.isEmpty()) framework = "Not specified";
-            String repoUrl = ValidationUtils.readString("Enter repository URL (or press Enter to skip): ");
-            if (repoUrl.isEmpty()) repoUrl = "Not specified";
+        try {
+            Project createdProject;
+            if (projectType.equals("Software")) {
+                System.out.println("\n[Software Project Details]");
+                String language = ValidationUtils.readNonEmptyString("Enter programming language: ");
+                String framework = ValidationUtils.readString("Enter framework (or press Enter to skip): ");
+                if (framework.isEmpty()) framework = "Not specified";
+                String repoUrl = ValidationUtils.readString("Enter repository URL (or press Enter to skip): ");
+                if (repoUrl.isEmpty()) repoUrl = "Not specified";
 
-            createdProject = projectService.createSoftwareProject(
-                    name, description, teamSize, budget, language, framework, repoUrl
-            );
-        } else {
-            System.out.println("\n[Hardware Project Details]");
-            String components = ValidationUtils.readNonEmptyString("Enter components: ");
-            String supplier = ValidationUtils.readString("Enter supplier (or press Enter to skip): ");
-            if (supplier.isEmpty()) supplier = "Not specified";
+                createdProject = projectService.createSoftwareProject(
+                        name, description, teamSize, budget, language, framework, repoUrl
+                );
+            } else {
+                System.out.println("\n[Hardware Project Details]");
+                String components = ValidationUtils.readNonEmptyString("Enter components: ");
+                String supplier = ValidationUtils.readString("Enter supplier (or press Enter to skip): ");
+                if (supplier.isEmpty()) supplier = "Not specified";
 
-            createdProject = projectService.createHardwareProject(
-                    name, description, teamSize, budget, components, supplier
-            );
-        }
-
-        if (createdProject != null) {
-            System.out.println();
-            ConsoleMenu.showSuccess("Project \"" + name + "\" created with ID: " + createdProject.getProjectId());
-
-            // Ask if user wants to add tasks
-            if (ValidationUtils.confirm("\nWould you like to add tasks to this project?")) {
-                addTasksToProject(createdProject);
+                createdProject = projectService.createHardwareProject(
+                        name, description, teamSize, budget, components, supplier
+                );
             }
+
+            if (createdProject != null) {
+                System.out.println();
+                ConsoleMenu.showSuccess("Project \"" + name + "\" created with ID: " + createdProject.getProjectId());
+
+                // Ask if user wants to add tasks
+                if (ValidationUtils.confirm("\nWould you like to add tasks to this project?")) {
+                    addTasksToProject(createdProject);
+                }
+            }
+        } catch (InvalidInputException e) {
+            ConsoleMenu.showError(e.getMessage());
         }
 
         ValidationUtils.waitForEnter();
@@ -263,15 +269,13 @@ public class Main {
             return;
         }
         String projectId = ValidationUtils.readProjectId("Enter Project ID: ");
-        Project project = projectService.findProjectById(projectId);
-
-        if (project == null) {
-            ConsoleMenu.showError("Project " + projectId + " not found");
+        try {
+            Project project = projectService.findProjectById(projectId);
+            showProjectDetailsAndOptions(project);
+        } catch (EmptyProjectException e) {
+            System.out.println("Error: " + e.getMessage());
             ValidationUtils.waitForEnter();
-            return;
         }
-
-        showProjectDetailsAndOptions(project);
     }
     //show project details with options
     private static void showProjectDetailsAndOptions(Project project){
@@ -371,23 +375,16 @@ public class Main {
         }
 
         String projectId = ValidationUtils.readProjectId("Enter Project ID to delete: ");
-        Project project = projectService.findProjectById(projectId);
+        try {
+            Project project = projectService.findProjectById(projectId);
+            System.out.println("Project: " + project.getProjectName());
 
-        if (project == null) {
-            ConsoleMenu.showError("Project " + projectId + " not found");
-            ValidationUtils.waitForEnter();
-            return;
-        }
-
-        System.out.println("Project: " + project.getProjectName());
-        System.out.println("Tasks: " + project.getTaskCount());
-
-        if (ValidationUtils.confirm("Are you sure you want to delete this project?")) {
-            if (projectService.deleteProject(projectId)) {
-                ConsoleMenu.showSuccess("Project " + projectId + " deleted");
+            if (ValidationUtils.confirm("Are you sure?")) {
+                projectService.deleteProject(projectId);
+                System.out.println("Project deleted.");
             }
-        } else {
-            ConsoleMenu.showInfo("Deletion cancelled");
+        } catch (EmptyProjectException e) {
+            System.out.println("Error: " + e.getMessage());
         }
 
         ValidationUtils.waitForEnter();
@@ -433,11 +430,11 @@ public class Main {
         }
         System.out.println("**********************************************************");
         String projectId = ValidationUtils.readProjectId("\nEnter Project ID: ");
-        Project project = projectService.findProjectById(projectId);
-        if (project == null) {
-            ConsoleMenu.showError("Project not found");
-        } else {
+        try {
+            Project project = projectService.findProjectById(projectId);
             project.displayTasks();
+        } catch (EmptyProjectException e) {
+            ConsoleMenu.showError("Project not found");
         }
 
         ValidationUtils.waitForEnter();
@@ -455,17 +452,15 @@ public class Main {
         String taskName = ValidationUtils.readNonEmptyString("Enter task name: ");
         String projectId = ValidationUtils.readProjectId("Enter assigned project ID: ");
 
-        Project project = projectService.findProjectById(projectId);
-        if (project == null) {
+        try {
+            Project project = projectService.findProjectById(projectId);
+            ValidationUtils.displayStatusOptions();
+            String status = ValidationUtils.readTaskStatus("Enter initial status: ");
+            taskService.addTaskToProject(projectId, taskName, status);
+        } catch (EmptyProjectException e) {
             ConsoleMenu.showError("Project " + projectId + " not found");
-            ValidationUtils.waitForEnter();
-            return;
         }
 
-        ValidationUtils.displayStatusOptions();
-        String status = ValidationUtils.readTaskStatus("Enter initial status: ");
-
-        taskService.addTaskToProject(projectId, taskName, status);
         ValidationUtils.waitForEnter();
     }
     //update task status
@@ -479,22 +474,22 @@ public class Main {
         ConsoleMenu.displayUpdateStatusHeader();
 
         String taskId = ValidationUtils.readTaskId("Enter Task ID: ");
-        Task task = taskService.findTaskById(taskId);
 
-        if (task == null) {
+        try {
+            Task task = taskService.findTaskById(taskId);
+
+            System.out.println("Task: " + task.getTaskName());
+            System.out.println("Current Status: " + task.getStatus());
+            System.out.println();
+
+            ValidationUtils.displayStatusOptions();
+            String newStatus = ValidationUtils.readTaskStatus("Enter new status: ");
+
+            taskService.updateTaskStatus(taskId, newStatus);
+        } catch (TaskNotFoundException e) {
             ConsoleMenu.showError("Task " + taskId + " not found");
-            ValidationUtils.waitForEnter();
-            return;
         }
 
-        System.out.println("Task: " + task.getTaskName());
-        System.out.println("Current Status: " + task.getStatus());
-        System.out.println();
-
-        ValidationUtils.displayStatusOptions();
-        String newStatus = ValidationUtils.readTaskStatus("Enter new status: ");
-
-        taskService.updateTaskStatus(taskId, newStatus);
         ValidationUtils.waitForEnter();
     }
     //remove task
@@ -506,21 +501,20 @@ public class Main {
         }
 
         String taskId = ValidationUtils.readTaskId("Enter Task ID to remove: ");
-        Task task = taskService.findTaskById(taskId);
 
-        if (task == null) {
+        try {
+            Task task = taskService.findTaskById(taskId);
+
+            System.out.println("Task: " + task.getTaskName());
+            System.out.println("Status: " + task.getStatus());
+
+            if (ValidationUtils.confirm("Remove this task?")) {
+                taskService.removeTask(taskId);
+            } else {
+                ConsoleMenu.showInfo("Removal cancelled");
+            }
+        } catch (TaskNotFoundException e) {
             ConsoleMenu.showError("Task " + taskId + " not found");
-            ValidationUtils.waitForEnter();
-            return;
-        }
-
-        System.out.println("Task: " + task.getTaskName());
-        System.out.println("Status: " + task.getStatus());
-
-        if (ValidationUtils.confirm("Remove this task?")) {
-            taskService.removeTask(taskId);
-        } else {
-            ConsoleMenu.showInfo("Removal cancelled");
         }
 
         ValidationUtils.waitForEnter();

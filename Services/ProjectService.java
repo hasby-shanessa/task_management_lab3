@@ -1,5 +1,5 @@
 package Services;
-
+import utils.exceptions.*;
 import Models.HardwareProject;
 import Models.Project;
 import Models.SoftwareProject;
@@ -17,7 +17,13 @@ public class ProjectService {
     }
 
     //Create software project
-    public SoftwareProject createSoftwareProject(String projectName, String projectDescription, int teamSize, String budget, String language, String framework, String repositoryUrl){
+    public SoftwareProject createSoftwareProject(String projectName, String projectDescription, int teamSize, String budget, String language, String framework, String repositoryUrl) throws InvalidInputException{
+        if (projectName == null || projectName.trim().isEmpty()) {
+            throw new InvalidInputException("projectName", "Project name cannot be empty");
+        }
+        if (teamSize <= 0) {
+            throw new InvalidInputException("teamSize", "Team size must be greater than 0");
+        }
         if(projectCount >= MAX_PROJECTS){
             System.out.println("Error: Maximum projects reached (" + MAX_PROJECTS + ")");
             return null;
@@ -29,7 +35,13 @@ public class ProjectService {
     }
 
     //Create hardware project
-    public HardwareProject createHardwareProject(String projectName, String projectDescription, int teamSize, String budget, String components, String supplier){
+    public HardwareProject createHardwareProject(String projectName, String projectDescription, int teamSize, String budget, String components, String supplier) throws InvalidInputException{
+        if(projectName == null || projectName.trim().isEmpty()){
+            throw new InvalidInputException("projectName", "Project name cannot be empty");
+        }
+        if(teamSize <=0){
+            throw new InvalidInputException("teamSize", "Team size must be greater than 0");
+        }
         if(projectCount >= MAX_PROJECTS){
             System.out.println("Error: Maximum projects reached (" + MAX_PROJECTS + ")");
             return null;
@@ -49,13 +61,13 @@ public class ProjectService {
         return projectCount;
     }
     //get project by id(using linear search through the projects array)
-    public Project findProjectById(String projectId){
+    public Project findProjectById(String projectId) throws EmptyProjectException{
         for(int i = 0; i<projectCount; i++){
             if(projects[i].getProjectId().equals(projectId)){
                 return projects[i];
             }
         }
-        return null;
+        throw new EmptyProjectException(projectId, "Project "+ projectId + " not found");
     }
 
     //get software projects only
@@ -117,7 +129,7 @@ public class ProjectService {
     }
 
     //Delete project
-    public boolean deleteProject(String projectId){
+    public boolean deleteProject(String projectId) throws EmptyProjectException{
         int indexToDelete = -1;
         for(int i = 0; i<projectCount; i++){
             if(projects[i].getProjectId().equals(projectId)){
@@ -126,7 +138,7 @@ public class ProjectService {
             }
         }
         if ( indexToDelete == -1){
-            return false;
+            throw new EmptyProjectException(projectId, "Project " + projectId + " not found");
         }
         //shifting to fill the gap
         for(int i = indexToDelete; i<projectCount-1; i++){
