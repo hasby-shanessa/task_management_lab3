@@ -7,9 +7,6 @@ import utils.ValidationUtils;
 import utils.exceptions.TaskNotFoundException;
 import utils.exceptions.*;
 
-import java.io.Console;
-import java.util.Scanner;
-
 public class Main {
 
     //services

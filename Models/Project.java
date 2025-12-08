@@ -23,6 +23,7 @@ public abstract class Project implements Completable {
         this.projectType = "Unknow"; //(will be set by child class(software/hardware)
         this.tasks = new Task [MAX_TASKS];
         this.taskCount = 0;
+        this.budget =  budget;
     }
 
     public String getProjectId() {

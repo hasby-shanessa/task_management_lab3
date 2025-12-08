@@ -1,6 +1,6 @@
 package utils.exceptions;
 
-public class EmptyProjectException extends Exception{
+public class EmptyProjectException extends NullPointerException{
     private String projectId;
     public EmptyProjectException(String message){
         super(message);

@@ -11,15 +11,22 @@ public class TaskService {
         this.projectService = projectService;
     }
     public Task addTaskToProject(String projectId, String taskName, String taskDescription, String status){
+//        int num = 12;
         try {
             Project project = projectService.findProjectById(projectId);
             Task task = new Task(taskName, taskDescription, status);
+//            num = num / 0;
             if(project.addTask(task)){
                 return task;
             }
             return null;
+
         } catch (EmptyProjectException e) {
             System.out.println("Error: Project " + projectId + " not found");
+            return null;
+        }
+        catch (Exception ex){
+            System.out.println("Internal Server Error");
             return null;
         }
     }
