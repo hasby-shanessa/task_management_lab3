@@ -1,10 +1,7 @@
 package utils.exceptions;
 
-public class InvalidInputException extends Exception{
+public class InvalidInputException extends IllegalArgumentException{
     private String fieldName;
-    public InvalidInputException(String message){
-        super(message);
-    }
     public InvalidInputException(String fieldName, String message){
         super(message);
         this.fieldName = fieldName;

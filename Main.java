@@ -182,8 +182,10 @@ public class Main {
                     try {
                         Project project = projectService.findProjectById(projectId);
                         showProjectDetailsAndOptions(project);
-                    } catch (EmptyProjectException e) {
+                    } catch (ProjectNotFoundException e) {
                         ConsoleMenu.showError("Project " + projectId + " not found");
+                    }catch (Exception e) {
+                        ConsoleMenu.showError("Internal server error: " + e.getMessage());
                     }
                 }
             }
@@ -269,8 +271,11 @@ public class Main {
         try {
             Project project = projectService.findProjectById(projectId);
             showProjectDetailsAndOptions(project);
-        } catch (EmptyProjectException e) {
+        } catch (ProjectNotFoundException e) {
             System.out.println("Error: " + e.getMessage());
+            ValidationUtils.waitForEnter();
+        } catch (Exception e) {
+            ConsoleMenu.showError("Internal server error: " + e.getMessage());
             ValidationUtils.waitForEnter();
         }
     }
@@ -380,8 +385,10 @@ public class Main {
                 projectService.deleteProject(projectId);
                 System.out.println("Project deleted.");
             }
-        } catch (EmptyProjectException e) {
+        } catch (ProjectNotFoundException e) {
             System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            ConsoleMenu.showError("Internal server error: " + e.getMessage());
         }
 
         ValidationUtils.waitForEnter();
@@ -430,8 +437,10 @@ public class Main {
         try {
             Project project = projectService.findProjectById(projectId);
             project.displayTasks();
-        } catch (EmptyProjectException e) {
+        } catch (ProjectNotFoundException e) {
             ConsoleMenu.showError("Project not found");
+        } catch (Exception e) {
+            ConsoleMenu.showError("Unexpected error: " + e.getMessage());
         }
 
         ValidationUtils.waitForEnter();
@@ -454,8 +463,10 @@ public class Main {
             ValidationUtils.displayStatusOptions();
             String status = ValidationUtils.readTaskStatus("Enter initial status: ");
             taskService.addTaskToProject(projectId, taskName, status);
-        } catch (EmptyProjectException e) {
+        } catch (ProjectNotFoundException e) {
             ConsoleMenu.showError("Project " + projectId + " not found");
+        } catch (Exception e) {
+            ConsoleMenu.showError("Unexpected error: " + e.getMessage());
         }
 
         ValidationUtils.waitForEnter();
