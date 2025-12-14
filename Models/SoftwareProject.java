@@ -14,32 +14,32 @@ public class SoftwareProject extends Project{
     }
 
     //IN CASE SOME FIELDS AREN'T KNOWN YET
-    public SoftwareProject(String projectName, String projectDescription, int teamSize, String budget){
-        super(projectName, projectDescription, teamSize, budget);;
-        this.projectType = "Software";
-        this.programmingLanguage = "Not specified";
-        this.framework = "Not specified";
-        this.repositoryUrl = "Not specified";
-    }
+//    public SoftwareProject(String projectName, String projectDescription, int teamSize, String budget){
+//        super(projectName, projectDescription, teamSize, budget);;
+//        this.projectType = "Software";
+//        this.programmingLanguage = "Not specified";
+//        this.framework = "Not specified";
+//        this.repositoryUrl = "Not specified";
+//    }
 
-    public String getProgrammingLanguage() {
-        return programmingLanguage;
-    }
-    public void setProgrammingLanguage(String programmingLanguage){
-        this.programmingLanguage = programmingLanguage;
-    }
-    public String getFramework(){
-        return framework;
-    }
-    public void setFramework(String framework){
-        this.framework = framework;
-    }
-    public String getRepositoryUrl(){
-        return repositoryUrl;
-    }
-    public void setRepositoryUrl(String repositoryUrl){
-        this.repositoryUrl = repositoryUrl;
-    }
+//    public String getProgrammingLanguage() {
+//        return programmingLanguage;
+//    }
+//    public void setProgrammingLanguage(String programmingLanguage){
+//        this.programmingLanguage = programmingLanguage;
+//    }
+//    public String getFramework(){
+//        return framework;
+//    }
+//    public void setFramework(String framework){
+//        this.framework = framework;
+//    }
+//    public String getRepositoryUrl(){
+//        return repositoryUrl;
+//    }
+//    public void setRepositoryUrl(String repositoryUrl){
+//        this.repositoryUrl = repositoryUrl;
+//    }
 
     //DISPLAY PROJECT DETAILS
     @Override
@@ -73,8 +73,8 @@ public class SoftwareProject extends Project{
     }
 
     // GET PROJECT SUMMARY
-    @Override
-    public String getProjectSummary(){
-        return String.format("Software: %s | %s/%s | Tasks: %d/%d (%.0f%%)", projectName, programmingLanguage, framework, getCompletedTasksCount(), taskCount, getCompletionPercentage());
-    }
+//    @Override
+//    public String getProjectSummary(){
+//        return String.format("Software: %s | %s/%s | Tasks: %d/%d (%.0f%%)", projectName, programmingLanguage, framework, getCompletedTasksCount(), taskCount, getCompletionPercentage());
+//    }
 }

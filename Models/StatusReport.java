@@ -7,15 +7,6 @@ public class StatusReport {
     private int completedTasks;
     private double averageCompletion;
 
-    //default constructor
-    public StatusReport(){
-        totalProjects = 0;
-        completedProjects =0;
-        totalTasks = 0;
-        completedTasks = 0;
-        averageCompletion = 0.0;
-    }
-
     public StatusReport(int totalProjects, int completedProjects, int totalTasks, int completedTasks, double averageCompletion){
         this.totalProjects = totalProjects;
         this.completedProjects = completedProjects;
@@ -38,22 +29,6 @@ public class StatusReport {
     }
     public double getAverageCompletion(){
         return averageCompletion;
-    }
-
-    public void setTotalProjects(int totalProjects){
-        this.totalProjects = totalProjects;
-    }
-    public void setCompletedProjects(int completedProjects){
-        this.completedProjects = completedProjects;
-    }
-    public void setTotalTasks(int totalTasks){
-        this.totalTasks = totalTasks;
-    }
-    public void setCompletedTasks(int completedTasks){
-        this.completedTasks = completedTasks;
-    }
-    public void setAverageCompletion(double averageCompletion){
-        this.averageCompletion = averageCompletion;
     }
 
     @Override

@@ -166,7 +166,7 @@ public abstract class Project implements Completable {
     }
 
     public abstract void displayProjectDetails();
-    public abstract String getProjectSummary();
+//    public abstract String getProjectSummary();
 
     //DISPLAY METHOD
     public void displayTasks(){
