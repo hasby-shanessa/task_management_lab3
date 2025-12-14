@@ -30,6 +30,23 @@ public abstract class Project implements Completable {
         this.tasks = new ArrayList<>();
     }
 
+    public Project(String projectId, String projectName, String projectDescription, int teamSize, String budget) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.projectDescription = projectDescription;
+        this.teamSize = teamSize;
+        this.budget = budget;
+        this.projectType = "Unknown";
+        this.tasks = new ArrayList<>();
+
+        try{
+            int idNumber = Integer.parseInt(projectId.substring(1));
+            if(idNumber >= nextId){
+                nextId = idNumber + 1;
+            }
+        } catch (NumberFormatException e){}
+    }
+
     public String getProjectId() {
         return projectId;
     }
