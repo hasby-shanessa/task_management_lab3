@@ -2,6 +2,10 @@ package Models;
 
 import Interfaces.Completable;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public abstract class Project implements Completable {
     private static int nextId = 1;
     protected String projectId;
@@ -10,20 +14,37 @@ public abstract class Project implements Completable {
     protected String projectType;
     protected int teamSize;
     protected String budget;
-    protected Task[] tasks;
-    protected int taskCount;
+//    protected Task[] tasks;
+//    protected int taskCount;
 
-    protected static final int MAX_TASKS = 100;
+//    protected static final int MAX_TASKS = 100;
 
-    public Project( String projectName, String projectDescription, int teamSize, String budget){
+    protected ArrayList<Task> tasks;
+    public Project(String projectName, String projectDescription, int teamSize, String budget) {
         this.projectId = "P" + String.format("%03d", nextId++);
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.teamSize = teamSize;
-        this.projectType = "Unknow"; //(will be set by child class(software/hardware)
-        this.tasks = new Task [MAX_TASKS];
-        this.taskCount = 0;
-        this.budget =  budget;
+        this.projectType = "Unknown";
+        this.budget = budget;
+        this.tasks = new ArrayList<>();
+    }
+
+    public Project(String projectId, String projectName, String projectDescription, int teamSize, String budget) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.projectDescription = projectDescription;
+        this.teamSize = teamSize;
+        this.budget = budget;
+        this.projectType = "Unknown";
+        this.tasks = new ArrayList<>();
+
+        try{
+            int idNumber = Integer.parseInt(projectId.substring(1));
+            if(idNumber >= nextId){
+                nextId = idNumber + 1;
+            }
+        } catch (NumberFormatException e){}
     }
 
     public String getProjectId() {
@@ -50,69 +71,51 @@ public abstract class Project implements Completable {
         return budget;
     }
 
-    public Task[] getTasks() {
+    public List<Task> getTasks(){
         return tasks;
     }
-
-    public int getTaskCount() {
-        return taskCount;
+    public int getTaskCount(){
+        return tasks.size();
     }
+
 
         // ADDING A TASK TO THE PROJECT
     public boolean addTask(Task task){
-        if(taskCount >= MAX_TASKS){
-            System.out.println("Error: Project is full(max " + MAX_TASKS + " tasks)");
-            return false;
-        }
-        tasks[taskCount] = task;
         task.setProjectId(this.projectId);
-        taskCount++;
+        tasks.add(task);  // ArrayList handles everything
 
-        System.out.println("Task \"" + task.getTaskName()+ "\" added successfully to Project " + projectId + "!");
+        System.out.println("Task \"" + task.getTaskName() + "\" added successfully to Project " + projectId + "!");
         return true;
     }
 
     //GETTING TASK BY ID
     public Task findTaskById(String taskId){
-        for(int i = 0; i<taskCount; i++){
-            if(tasks[i].getTaskId().equals(taskId)){
-                return tasks[i];
-            }
-        }
-        return null;
+        return tasks.stream()                              // Convert list to stream
+                .filter(task -> task.getTaskId().equals(taskId))  // Lambda: keep only matching
+                .findFirst()                               // Get first match (or empty)
+                .orElse(null);
     }
 
     // REMOVING TASK
     public boolean removeTask(String taskId){
-        int indexToRemove = -1;
-        for(int i = 0; i<taskCount; i++){
-            if(tasks[i].getTaskId().equals(taskId)){
-                indexToRemove = i;
-                break;
-            }
+        boolean removed = tasks.removeIf(task -> task.getTaskId().equals(taskId));
+        if (removed) {
+            System.out.println("Task " + taskId + " removed successfully");
+        } else {
+            System.out.println("Error: Task " + taskId + " not found");
         }
-        if(indexToRemove == -1){
-            System.out.println("Error: Task "+ taskId + "not found");
-            return false;
-        }
-        for(int i = indexToRemove; i<taskCount-1; i++){
-            tasks[i] = tasks[i+1];
-        }
-        tasks[taskCount - 1] = null;
-        taskCount--;
-        System.out.println("Task " + taskId + " removed successfully");
-        return true;
+        return removed;
     }
 
     //UPDATING TASK STATUS
     public boolean updateTaskStatus(String taskId, String newStatus){
         Task task = findTaskById(taskId);
-        if(task == null){
+        if (task == null) {
             System.out.println("Error: Task " + taskId + " not found");
             return false;
         }
-        if(task.setStatus(newStatus)){
-            System.out.println("Task \"" + task.getTaskName() + "\" marked as "+ newStatus);
+        if (task.setStatus(newStatus)) {
+            System.out.println("Task \"" + task.getTaskName() + "\" marked as " + newStatus);
             return true;
         }
         return false;
@@ -120,53 +123,53 @@ public abstract class Project implements Completable {
 
     @Override
     public boolean isComplete(){
-        if(taskCount==0){
+        if (tasks.isEmpty()) {  // CHANGE: isEmpty() instead of taskCount == 0
             return false;
         }
-        for(int i = 0; i<taskCount; i++){
-            if(!tasks[i].isComplete()){
-                return false;
-            }
-        }
-        //If all tasks are complete
-        return true;
+        return tasks.stream().allMatch(Task::isComplete);
     }
 
     @Override
     public void markAsComplete(){
-        for(int i =0; i<taskCount; i++){
-            tasks[i].markAsComplete();
-        }
-        System.out.println("All tasks are complete");
+        tasks.forEach(Task::markAsComplete);
+
+        System.out.println("All tasks marked as complete");
     }
 
     @Override
     public double getCompletionPercentage(){
-        if(taskCount==0){
+        if (tasks.isEmpty()) {
             return 0.0;
         }
-        int completedTasks = 0;
-        for(int i = 0; i<taskCount; i++){
-            if(tasks[i].isComplete()){
-                completedTasks++;
-            }
-        }
-        return ((double)completedTasks / taskCount) * 100.0;
+        long completedCount = tasks.stream()
+                .filter(Task::isComplete)  // Keep only completed tasks
+                .count();                   // Count them
+
+        return ((double) completedCount / tasks.size()) * 100.0;
     }
 
     //GETTING COUNT OF THE COMPLETED TASKS
     public int getCompletedTasksCount(){
-        int count = 0;
-        for(int i = 0; i<taskCount; i++){
-            if(tasks[i].isComplete()){
-                count++;
-            }
-        }
-        return count;
+        return (int) tasks.stream()
+                .filter(Task::isComplete)
+                .count();
+    }
+
+    public List<Task> getCompletedTasks(){
+        return tasks.stream()
+                .filter(Task::isComplete)
+                .collect(Collectors.toList());
+    }
+
+    //get task by status
+    public List<Task> getTasksByStatus(String status) {
+        return tasks.stream()
+                .filter(task -> task.getStatus().equals(status))  // Lambda
+                .collect(Collectors.toList());
     }
 
     public abstract void displayProjectDetails();
-    public abstract String getProjectSummary();
+//    public abstract String getProjectSummary();
 
     //DISPLAY METHOD
     public void displayTasks(){
@@ -175,13 +178,13 @@ public abstract class Project implements Completable {
         System.out.printf("%-8s | %-25s | %15s%n" , "ID", "TASK NAME", "STATUS");
         System.out.println("----------------------------------------------------");
 
-        if(taskCount == 0){
+        if (tasks.isEmpty()) {
             System.out.println("No tasks");
         } else {
-            for(int i = 0; i<taskCount; i++){
-                Task t = tasks[i];
-                System.out.printf("%-8s | %-25s | %15s%n", t.getTaskId(), t.getTaskName(), t.getStatus());
-            }
+            tasks.forEach(t ->
+                    System.out.printf("%-8s | %-25s | %15s%n",
+                            t.getTaskId(), t.getTaskName(), t.getStatus())
+            );
         }
         System.out.println("----------------------------------------------------");
         System.out.printf("Completion Rate: %.0f%%%n", getCompletionPercentage());

@@ -13,32 +13,26 @@ public class SoftwareProject extends Project{
         this.repositoryUrl = repositoryUrl;
     }
 
-    //IN CASE SOME FIELDS AREN'T KNOWN YET
-    public SoftwareProject(String projectName, String projectDescription, int teamSize, String budget){
-        super(projectName, projectDescription, teamSize, budget);;
+    //for loading projects from file
+
+    public SoftwareProject(String projectId, String projectName, String projectDescription, int teamSize, String budget, String programmingLanguage, String framework, String repositoryUrl){
+        super(projectId, projectName, projectDescription, teamSize, budget);
         this.projectType = "Software";
-        this.programmingLanguage = "Not specified";
-        this.framework = "Not specified";
-        this.repositoryUrl = "Not specified";
+        this.programmingLanguage = programmingLanguage;
+        this.framework = framework;
+        this.repositoryUrl = repositoryUrl;
     }
 
     public String getProgrammingLanguage() {
         return programmingLanguage;
     }
-    public void setProgrammingLanguage(String programmingLanguage){
-        this.programmingLanguage = programmingLanguage;
-    }
+
     public String getFramework(){
         return framework;
     }
-    public void setFramework(String framework){
-        this.framework = framework;
-    }
+
     public String getRepositoryUrl(){
         return repositoryUrl;
-    }
-    public void setRepositoryUrl(String repositoryUrl){
-        this.repositoryUrl = repositoryUrl;
     }
 
     //DISPLAY PROJECT DETAILS
@@ -60,6 +54,7 @@ public class SoftwareProject extends Project{
         System.out.println("Programming Language: " + programmingLanguage);
         System.out.println("Framework: " + framework);
         System.out.println("Repository URL: " + repositoryUrl);
+        System.out.printf("Completion: %.0f%%%n", getCompletionPercentage());
 
         displayTasks();  //inherited from Project
 
@@ -73,8 +68,8 @@ public class SoftwareProject extends Project{
     }
 
     // GET PROJECT SUMMARY
-    @Override
-    public String getProjectSummary(){
-        return String.format("Software: %s | %s/%s | Tasks: %d/%d (%.0f%%)", projectName, programmingLanguage, framework, getCompletedTasksCount(), taskCount, getCompletionPercentage());
+    public String getProjectSummary() {
+        return String.format("[%s] %s - %s/%s (%.0f%% complete)",
+                projectId, projectName, programmingLanguage, framework, getCompletionPercentage());
     }
 }

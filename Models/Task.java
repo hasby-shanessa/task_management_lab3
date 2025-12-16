@@ -30,6 +30,29 @@ public class Task implements Completable {
         this(taskName, "", "Pending");
     }
 
+    //constructor with custom ID for loading from file
+    public Task(String taskId, String taskName, String taskDescription, String status){
+        this.taskId = taskId;  //provided id not auto generate
+        this.taskName = taskName;
+        this.taskDescription = taskDescription;
+
+        if (isValidStatus(status)) {
+            this.status = status;
+        } else {
+            this.status = "Pending";
+        }
+
+        this.assignedTo = "Unassigned";
+        this.projectId = null;
+
+        try {
+            int idNumber = Integer.parseInt(taskId.substring(1));
+            if(idNumber >= nextId){
+                nextId = idNumber + 1;
+            }
+        } catch (NumberFormatException e) {}
+    }
+
     private boolean isValidStatus(String status){
         return status.equals("Pending") || status.equals("In Progress") || status.equals("Completed");
     }
@@ -48,7 +71,19 @@ public class Task implements Completable {
         return status;
     }
 
-    public boolean setStatus(String status) {
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
+    public String getAssignedTo() {
+        return assignedTo;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public synchronized boolean setStatus(String status) {
         if (isValidStatus(status)){
             this.status = status;
             return true;
@@ -60,6 +95,10 @@ public class Task implements Completable {
 
     public void setProjectId(String projectId) {
         this.projectId = projectId;
+    }
+
+    public void setAssignedTo(String assignedTo) {
+        this.assignedTo = assignedTo;
     }
 
 
@@ -80,6 +119,17 @@ public class Task implements Completable {
 
     public static void resetIdCounter(){
         nextId =1;
+    }
+
+    //for testing
+    public static int getNextId() {
+        return nextId;
+    }
+
+    //convert task to json like string for file storage
+    public String toJsonString() {
+        return String.format("{\"id\": \"%s\", \"name\": \"%s\", \"status\": \"%s\"}",
+                taskId, taskName, status);
     }
 
     @Override

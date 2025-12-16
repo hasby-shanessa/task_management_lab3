@@ -11,26 +11,22 @@ public class HardwareProject extends Project {
         this.supplier = supplier;
     }
 
-    //SMALLER IN CASE SOME FIELDS MISS
-    public HardwareProject(String projectName, String projectDescription, int teamSize, String budget){
-        super(projectName, projectDescription, teamSize, budget);
+    //loading projects from file
+    public HardwareProject(String projectId, String projectName, String projectDescription, int teamSize, String budget, String components, String supplier) {
+        super(projectId, projectName, projectDescription, teamSize, budget);  // Pass ID to parent
         this.projectType = "Hardware";
-        this.components = "Not specified";
-        this.supplier = "Not specified";
+        this.components = components;
+        this.supplier = supplier;
     }
 
     public String getComponents(){
         return components;
     }
-    public void setComponents(String components){
-        this.components = components;
-    }
+
     public String getSupplier(){
         return supplier;
     }
-    public void setSupplier(String supplier){
-        this.supplier = supplier;
-    }
+
 
     @Override
     public void displayProjectDetails(){
@@ -60,8 +56,8 @@ public class HardwareProject extends Project {
         System.out.println("4: Back to Main Menu");
     }
 
-    @Override
-    public String getProjectSummary(){
-        return String.format("Hardware: %s | Components: %s | Tasks: %d/%d (%.0f%%", projectName, components, getCompletedTasksCount(), taskCount, getCompletionPercentage());
+   public String getProjectSummary() {
+        return String.format("[%s] %s - %s (%.0f%% complete)",
+                projectId, projectName, components, getCompletionPercentage());
     }
 }

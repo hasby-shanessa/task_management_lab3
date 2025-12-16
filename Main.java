@@ -455,19 +455,32 @@ public class Main {
 
         ConsoleMenu.displayAddTaskHeader();
 
-        String taskName = ValidationUtils.readNonEmptyString("Enter task name: ");
-        String projectId = ValidationUtils.readProjectId("Enter assigned project ID: ");
+        // Show numbered list of all available projects
+        Project[] projects = projectService.getAllProjects();
+        int count = projectService.getProjectCount();
 
-        try {
-            Project project = projectService.findProjectById(projectId);
-            ValidationUtils.displayStatusOptions();
-            String status = ValidationUtils.readTaskStatus("Enter initial status: ");
-            taskService.addTaskToProject(projectId, taskName, status);
-        } catch (ProjectNotFoundException e) {
-            ConsoleMenu.showError("Project " + projectId + " not found");
-        } catch (Exception e) {
-            ConsoleMenu.showError("Unexpected error: " + e.getMessage());
+        System.out.println("\n Select a Project:");
+        System.out.println("------------------------------------------------------------");
+
+        for (int i = 0; i < count; i++) {
+            System.out.printf("%d. [%s] %s (%s) - %d tasks%n", (i + 1), projects[i].getProjectId(), projects[i].getProjectName(), projects[i].getProjectType(), projects[i].getTaskCount()
+            );
         }
+        System.out.println("------------------------------------------------------------");
+
+        // User selects by number
+        int choice = ValidationUtils.readIntInRange("Select project (1-" + count + "): ", 1, count);
+        Project selectedProject = projects[choice - 1];
+
+        System.out.println("\nAdding task to: " + selectedProject.getProjectName());
+
+        // Get task details
+        String taskName = ValidationUtils.readNonEmptyString("Enter task name: ");
+        ValidationUtils.displayStatusOptions();
+        String status = ValidationUtils.readTaskStatus("Enter initial status: ");
+
+        // Add the task
+        taskService.addTaskToProject(selectedProject.getProjectId(), taskName, status);
 
         ValidationUtils.waitForEnter();
     }
