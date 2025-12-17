@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.exceptions.EmptyProjectException;
 import utils.exceptions.InvalidInputException;
+import utils.exceptions.ProjectNotFoundException;
 import utils.exceptions.TaskNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,17 +83,17 @@ public class ValidationTests {
 
     //empty project tests
     @Test
-    @DisplayName("Finding non-existent project should throw EmptyProjectException")
+    @DisplayName("Finding non-existent project should throw ProjectNotFoundException")
     void testProjectNotFound() {
-        assertThrows(EmptyProjectException.class, () -> {
+        assertThrows(ProjectNotFoundException.class, () -> {
             projectService.findProjectById("P999");
         });
     }
 
     @Test
-    @DisplayName("Deleting non-existent project should throw EmptyProjectException")
+    @DisplayName("Deleting non-existent project should throw ProjectNotFoundException")
     void testDeleteProjectNotFound() {
-        assertThrows(EmptyProjectException.class, () -> {
+        assertThrows(ProjectNotFoundException.class, () -> {
             projectService.deleteProject("P999");
         });
     }

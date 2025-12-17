@@ -18,7 +18,7 @@ public class FileUtils {
     private static final String DATA_FILE = "data/projects_data.json";
 
     //save all projects to JSON file
-    public static void saveProject(Map<String, Project> projects) {
+    public static void saveProjects(Map<String, Project> projects) {
         StringBuilder json = new StringBuilder();
         json.append("[\n");
 
