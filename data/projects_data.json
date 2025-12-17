@@ -1,0 +1,28 @@
+[
+ {
+    "projectId": "P001", 
+    "name": "project 1",
+    "description": "",
+    "type": "Software",
+    "teamSize": 1,
+    "budget": "$20",
+    "language": "java",
+    "framework": "Not specified",
+    "repository": "Not specified",
+ "tasks": [
+      {"id": "T001", "name": "software", "status": "In Progress"}
+     ]
+   },
+ {
+    "projectId": "P002", 
+    "name": "hard",
+    "description": "",
+    "type": "Hardware",
+    "teamSize": 2,
+    "budget": "$400",
+    "components": "arduino",
+    "supplier": "Not specified",
+ "tasks": [
+     ]
+   }
+]

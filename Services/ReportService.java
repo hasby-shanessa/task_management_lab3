@@ -2,6 +2,7 @@ package Services;
 
 import Models.Project;
 import Models.StatusReport;
+import java.util.List;
 
 public class ReportService {
     private ProjectService projectService;
@@ -12,17 +13,17 @@ public class ReportService {
 
     // Generate report data and return as StatusReport object
     public StatusReport generateStatusReport() {
-        Project[] projects = projectService.getAllProjects();
-        int count = projectService.getProjectCount();
+        List<Project> projects = projectService.getAllProjectsList();
+        int count = projects.size();
 
         int totalTasks = 0;
         int completedTasks = 0;
         int completedProjects = 0;
 
-        for (int i = 0; i < count; i++) {
-            totalTasks += projects[i].getTaskCount();
-            completedTasks += projects[i].getCompletedTasksCount();
-            if (projects[i].isComplete()) {
+        for (Project project : projects) {
+            totalTasks += project.getTaskCount();
+            completedTasks += project.getCompletedTasksCount();
+            if (project.isComplete()) {
                 completedProjects++;
             }
         }
@@ -57,19 +58,17 @@ public class ReportService {
         System.out.println();
 
         // Display detailed project breakdown
-        Project[] projects = projectService.getAllProjects();
-        int count = projectService.getProjectCount();
+        List<Project> projects = projectService.getAllProjectsList();
 
         System.out.println("PROJECT DETAILS:");
         System.out.println("_______________________________________________________________");
         System.out.printf("%-10s | %-18s | %-5s | %-9s | %s%n", "PROJECT ID", "PROJECT NAME", "TASKS", "COMPLETED", "PROGRESS");
         System.out.println("_______________________________________________________________");
 
-        if (count == 0) {
+        if (projects.isEmpty()) {
             System.out.println("                     No projects to report                     ");
         } else {
-            for (int i = 0; i < count; i++) {
-                Project p = projects[i];
+            for (Project p : projects) {
                 String name = p.getProjectName();
                 if (name.length() > 18) {
                     name = name.substring(0, 15) + "...";

@@ -186,6 +186,17 @@ public class ValidationUtils {
         scanner.nextLine();
     }
 
+    public static double readDouble(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                return Double.parseDouble(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number");
+            }
+        }
+    }
+
     //close scanner
     public static void closeScanner(){
         scanner.close();
