@@ -188,18 +188,14 @@ java -jar junit-platform-console-standalone.jar --scan-classpath
 ## 📸 Screenshots
 
 ### Welcome Screen
-```
 ![img.png](img.png)
-```
 
 ### Status Report
-```
 ![img_1.png](img_1.png)
-```
+
 ### Manage Projects
-````
 ![img_2.png](img_2.png)
-````
+
 ---
 
 ## 🔄 Git Workflow
