@@ -8,7 +8,6 @@ import Services.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import utils.exceptions.EmptyProjectException;
 import utils.exceptions.InvalidInputException;
 import utils.exceptions.ProjectNotFoundException;
 import utils.exceptions.TaskNotFoundException;

@@ -73,8 +73,8 @@ public class StreamOperationsTest {
         List<Task> pending = streamService.getTasksByStatus("Pending");
         List<Task> completed = streamService.getTasksByStatus("Completed");
 
-        assertEquals(2, pending.size());  // Write Tests + Assembly
-        assertEquals(4, completed.size()); // Design DB, Build API, UI Design, Circuit Design
+        assertEquals(2, pending.size());
+        assertEquals(4, completed.size());
     }
     @Test
     @DisplayName("getAllTasks should flatten all tasks from all projects")

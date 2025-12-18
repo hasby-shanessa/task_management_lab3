@@ -66,10 +66,4 @@ public class SoftwareProject extends Project{
         System.out.println("4. Back to Main Menu");
 
     }
-
-    // GET PROJECT SUMMARY
-    public String getProjectSummary() {
-        return String.format("[%s] %s - %s/%s (%.0f%% complete)",
-                projectId, projectName, programmingLanguage, framework, getCompletionPercentage());
-    }
 }

@@ -13,7 +13,7 @@ public class HardwareProject extends Project {
 
     //loading projects from file
     public HardwareProject(String projectId, String projectName, String projectDescription, int teamSize, String budget, String components, String supplier) {
-        super(projectId, projectName, projectDescription, teamSize, budget);  // Pass ID to parent
+        super(projectId, projectName, projectDescription, teamSize, budget);
         this.projectType = "Hardware";
         this.components = components;
         this.supplier = supplier;

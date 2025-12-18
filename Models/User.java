@@ -35,9 +35,6 @@ public abstract class User {
     public String getDisplayHeader(){
         return fullName + "( " +role + " )";
     }
-    public static void resetIdCounter(){
-        nextId = 1;
-    }
 
     @Override
     public String toString(){

@@ -4,7 +4,6 @@ import Interfaces.Completable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class Project implements Completable {
     private static int nextId = 1;
@@ -14,10 +13,6 @@ public abstract class Project implements Completable {
     protected String projectType;
     protected int teamSize;
     protected String budget;
-//    protected Task[] tasks;
-//    protected int taskCount;
-
-//    protected static final int MAX_TASKS = 100;
 
     protected ArrayList<Task> tasks;
     public Project(String projectName, String projectDescription, int teamSize, String budget) {
@@ -82,7 +77,7 @@ public abstract class Project implements Completable {
         // ADDING A TASK TO THE PROJECT
     public boolean addTask(Task task){
         task.setProjectId(this.projectId);
-        tasks.add(task);  // ArrayList handles everything
+        tasks.add(task);
 
         System.out.println("Task \"" + task.getTaskName() + "\" added successfully to Project " + projectId + "!");
         return true;
@@ -90,9 +85,9 @@ public abstract class Project implements Completable {
 
     //GETTING TASK BY ID
     public Task findTaskById(String taskId){
-        return tasks.stream()                              // Convert list to stream
-                .filter(task -> task.getTaskId().equals(taskId))  // Lambda: keep only matching
-                .findFirst()                               // Get first match (or empty)
+        return tasks.stream()
+                .filter(task -> task.getTaskId().equals(taskId))
+                .findFirst()
                 .orElse(null);
     }
 
@@ -142,8 +137,8 @@ public abstract class Project implements Completable {
             return 0.0;
         }
         long completedCount = tasks.stream()
-                .filter(Task::isComplete)  // Keep only completed tasks
-                .count();                   // Count them
+                .filter(Task::isComplete)
+                .count();
 
         return ((double) completedCount / tasks.size()) * 100.0;
     }
@@ -155,21 +150,7 @@ public abstract class Project implements Completable {
                 .count();
     }
 
-    public List<Task> getCompletedTasks(){
-        return tasks.stream()
-                .filter(Task::isComplete)
-                .collect(Collectors.toList());
-    }
-
-    //get task by status
-    public List<Task> getTasksByStatus(String status) {
-        return tasks.stream()
-                .filter(task -> task.getStatus().equals(status))  // Lambda
-                .collect(Collectors.toList());
-    }
-
     public abstract void displayProjectDetails();
-//    public abstract String getProjectSummary();
 
     //DISPLAY METHOD
     public void displayTasks(){

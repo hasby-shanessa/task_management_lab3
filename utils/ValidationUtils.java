@@ -88,45 +88,6 @@ public class ValidationUtils {
         System.out.println("3. Complete");
     }
 
-    //read project id
-    public static String readProjectId(String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String input = scanner.nextLine().trim().toUpperCase();
-
-            if (input.matches("P\\D{3}")) {
-                return input;
-            }
-            if (input.matches("\\d+")) {
-                try {
-                    int num = Integer.parseInt(input);
-                    return "P" + String.format("%03d", num);
-                } catch (NumberFormatException e) {
-                }
-            }
-            System.out.println("Error: Invalid input, please enter a valid numeric or prefixed ID(e.g. P001");
-        }
-    }
-
-    //read task id
-    public static String readTaskId(String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String input = scanner.nextLine().trim().toUpperCase();
-
-            if (input.matches("T\\d{3}")) {
-                return input;
-            }
-            if (input.matches("\\d+")) {
-                try {
-                    int num = Integer.parseInt(input);
-                    return "T" + String.format("%03d", num);
-                } catch (NumberFormatException e) {
-                }
-            }
-            System.out.println("Error: Invalid input, please enter a valid Task ID(e.g. T001");
-        }
-    }
     //read budget
     public static String readBudget(String prompt) {
         while (true) {
@@ -144,24 +105,6 @@ public class ValidationUtils {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Error: Please enter a valid amount (e.g., 15000 or $15,000)");
-            }
-        }
-    }
-    //read project type
-    public static String readProjectType(){
-        System.out.println("Project Type:");
-        System.out.println("1. Software");
-        System.out.println("2. Hardware");
-
-        while (true){
-            System.out.print("Enter choice (1 or 2): ");
-            String input = scanner.nextLine().trim();
-            if (input.equals("1") || input.equalsIgnoreCase("Software")) {
-                return "Software";
-            } else if (input.equals("2") || input.equalsIgnoreCase("Hardware")) {
-                return "Hardware";
-            } else {
-                System.out.println("Error: Please enter 1 for Software or 2 for Hardware");
             }
         }
     }

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProjectService {
     //array to store all projects in the system
@@ -29,7 +28,7 @@ public class ProjectService {
 //            checkCapacity();
 
             SoftwareProject project = new SoftwareProject(projectName, projectDescription, teamSize, budget, language, framework, repositoryUrl);
-            projects.put(project.getProjectId(), project);  // Key = ID, Value = Project
+            projects.put(project.getProjectId(), project);
 
             return project;
         } catch (InvalidInputException e) {
@@ -63,7 +62,7 @@ public class ProjectService {
             if(projectId == null || projectId.trim().isEmpty()){
                 throw new InvalidInputException(projectId, "Project ID cannot be empty");
             }
-            Project project = projects.get(projectId);  // Instant lookup
+            Project project = projects.get(projectId);
 
             if (project == null) {
                 throw new ProjectNotFoundException(projectId, "Project " + projectId + " not found");
@@ -107,7 +106,7 @@ public class ProjectService {
                 throw new ProjectNotFoundException(projectId, "Project " + projectId + " not found");
             }
 
-            projects.remove(projectId);  // One line! No shifting needed!
+            projects.remove(projectId);
             return true;
 
         } catch (ProjectNotFoundException e) {
@@ -123,57 +122,15 @@ public class ProjectService {
         }
     }
 
-    public List<Project> getSoftwareProjects(){
-        return projects.values().stream()
-                .filter(p -> p.getProjectType().equals("Software"))
-                .collect(Collectors.toList());
-    }
-
-    public List<Project> getHardwareProjects() {
-        return projects.values().stream()
-                .filter(p -> p.getProjectType().equals("Hardware"))
-                .collect(Collectors.toList());
-    }
-
-    public List<Project> getProjectsByType(String type) {
-        return projects.values().stream()
-                .filter(p -> p.getProjectType().equals(type))
-                .collect(Collectors.toList());
-    }
-
-    public long getSoftwareProjectCount(){
-        return projects.values().stream()
-                .filter(p->p.getProjectType().equals("Software"))
-                .count();
-    }
-
-    public long getHardwareProjectCount(){
-        return projects.values().stream()
-                .filter(p->p.getProjectType().equals("Hardware"))
-                .count();
-    }
-
-    //get completed projects using stream
-    public List<Project> getCompletedProjects(){
-        return projects.values().stream()
-                .filter(Project::isComplete)
-                .collect(Collectors.toList());
-    }
-    public List<Project> getProjectsAboveCompletion(double threshold) {
-        return projects.values().stream()
-                .filter(p -> p.getCompletionPercentage() > threshold)
-                .collect(Collectors.toList());
-    }
-
     public double getAverageCompletion() {
         if (projects.isEmpty()) {
             return 0.0;
         }
 
         return projects.values().stream()
-                .mapToDouble(Project::getCompletionPercentage)  // Convert to double stream
-                .average()                                       // Calculate average
-                .orElse(0.0); //default if empty
+                .mapToDouble(Project::getCompletionPercentage)
+                .average()
+                .orElse(0.0);
     }
         public int getTotalTaskCount(){
             return projects.values().stream()
