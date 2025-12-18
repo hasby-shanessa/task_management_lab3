@@ -189,25 +189,17 @@ java -jar junit-platform-console-standalone.jar --scan-classpath
 
 ### Welcome Screen
 ```
---********************************************************************--
-||              WELCOME TO JAVA TASK MANAGEMENT SYSTEM                 ||
-||                         Week 3 Edition                              ||
-||     Features: Collections, Streams, File I/O, Concurrency          ||
----*******************************************************************---
+![img.png](img.png)
 ```
 
 ### Status Report
 ```
-*********************************************************
-|                PROJECT STATUS REPORT                   |
-*********************************************************
-│  Total Projects:      3                               │
-│  Completed Projects:  1                               │
-│  Total Tasks:         8                               │
-│  Completed Tasks:     5                               │
-│  Average Completion:  62.5%                           │
+![img_1.png](img_1.png)
 ```
-
+### Manage Projects
+````
+![img_2.png](img_2.png)
+````
 ---
 
 ## 🔄 Git Workflow
@@ -253,6 +245,5 @@ This project is for educational purposes as part of Java coursework.
 
 ## 🙏 Acknowledgments
 
-- Rwanda Coding Academy
 - Java Documentation
 - JUnit 5 Documentation

@@ -74,25 +74,6 @@ public class StreamService {
         return getAllTasks().stream()
                 .collect(Collectors.groupingBy(Task::getStatus));
     }
-    //group tasks by project
-    public Map<String, List<Task>> groupTasksByProject(){
-        return getAllTasks().stream()
-                .collect(Collectors.groupingBy(Task::getProjectId));
-    }
-
-    //display completed projects
-    public void displayCompletedProjects() {
-        System.out.println("\n=== COMPLETED PROJECTS ===");
-        List<Project> completed = getCompletedProjects();
-
-        if (completed.isEmpty()) {
-            System.out.println("No completed projects found.");
-        } else {
-            completed.forEach(p ->
-                    System.out.println("✓ [" + p.getProjectId() + "] " + p.getProjectName())
-            );
-        }
-    }
     //display projects above completion threshold
     public void displayProjectsAboveCompletion(double threshold) {
         System.out.println("\n=== PROJECTS ABOVE " + threshold + "% COMPLETION ===");

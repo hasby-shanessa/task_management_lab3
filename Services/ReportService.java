@@ -61,9 +61,9 @@ public class ReportService {
         List<Project> projects = projectService.getAllProjectsList();
 
         System.out.println("PROJECT DETAILS:");
-        System.out.println("_______________________________________________________________");
+        System.out.println("*********************************************************");
         System.out.printf("%-10s | %-18s | %-5s | %-9s | %s%n", "PROJECT ID", "PROJECT NAME", "TASKS", "COMPLETED", "PROGRESS");
-        System.out.println("_______________________________________________________________");
+        System.out.println("*********************************************************");
 
         if (projects.isEmpty()) {
             System.out.println("                     No projects to report                     ");
@@ -81,7 +81,7 @@ public class ReportService {
                         p.getCompletionPercentage());
             }
         }
-        System.out.println("_______________________________________________________________");
+        System.out.println("***************************************************************");
         System.out.println();
     }
 }

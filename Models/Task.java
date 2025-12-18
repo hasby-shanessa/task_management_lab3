@@ -32,7 +32,7 @@ public class Task implements Completable {
 
     //constructor with custom ID for loading from file
     public Task(String taskId, String taskName, String taskDescription, String status){
-        this.taskId = taskId;  //provided id not auto generate
+        this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
 
@@ -71,14 +71,6 @@ public class Task implements Completable {
         return status;
     }
 
-    public String getTaskDescription() {
-        return taskDescription;
-    }
-
-    public String getAssignedTo() {
-        return assignedTo;
-    }
-
     public String getProjectId() {
         return projectId;
     }
@@ -95,10 +87,6 @@ public class Task implements Completable {
 
     public void setProjectId(String projectId) {
         this.projectId = projectId;
-    }
-
-    public void setAssignedTo(String assignedTo) {
-        this.assignedTo = assignedTo;
     }
 
 
@@ -119,17 +107,6 @@ public class Task implements Completable {
 
     public static void resetIdCounter(){
         nextId =1;
-    }
-
-    //for testing
-    public static int getNextId() {
-        return nextId;
-    }
-
-    //convert task to json like string for file storage
-    public String toJsonString() {
-        return String.format("{\"id\": \"%s\", \"name\": \"%s\", \"status\": \"%s\"}",
-                taskId, taskName, status);
     }
 
     @Override

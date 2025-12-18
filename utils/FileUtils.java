@@ -242,10 +242,6 @@ public class FileUtils {
     public static boolean dataFileExists(){
         return Files.exists(Paths.get(DATA_FILE));
     }
-    //get data file path
-    public static String getDataFilePath(){
-        return DATA_FILE;
-    }
     //delete data file(for testing)
     public static boolean deleteDataFile(){
         try{

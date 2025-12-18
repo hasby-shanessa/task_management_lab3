@@ -1,6 +1,6 @@
 package Controllers;
+
 import Services.ServiceContainer;
-import utils.ConsoleMenu;
 import utils.ValidationUtils;
 
 public class ConcurrencyController {
@@ -36,7 +36,7 @@ public class ConcurrencyController {
 
     private void runThreadPoolDemo() {
         if (services.getProjectService().getTotalTaskCount() == 0) {
-            ConsoleMenu.showInfo("No tasks available. Create some tasks first.");
+            System.out.println("ℹ No tasks available. Create some tasks first.");
         } else {
             services.getConcurrencyService().simulateConcurrentUpdates();
         }
@@ -44,7 +44,7 @@ public class ConcurrencyController {
 
     private void runParallelStreamDemo() {
         if (services.getProjectService().getTotalTaskCount() == 0) {
-            ConsoleMenu.showInfo("No tasks available. Create some tasks first.");
+            System.out.println("ℹ No tasks available. Create some tasks first.");
         } else {
             services.getConcurrencyService().parallelStreamUpdate();
         }
